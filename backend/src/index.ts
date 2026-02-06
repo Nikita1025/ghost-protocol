@@ -38,7 +38,7 @@ function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-const CORS_ORIGIN = "https://ghost-protocol-production-7786.up.railway.app";
+const CORS_ORIGIN = "https://ghost-protocol-nu.vercel.app";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": CORS_ORIGIN,
