@@ -38,6 +38,15 @@ function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+const CORS_ORIGIN = "https://ghost-protocol-production-7786.up.railway.app";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": CORS_ORIGIN,
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Max-Age": "86400",
+};
+
 async function* streamFragments(text: string): AsyncGenerator<string> {
   let i = 0;
   while (i < text.length) {
@@ -53,6 +62,9 @@ async function* streamFragments(text: string): AsyncGenerator<string> {
 const server = Bun.serve({
   port: 3001,
   async fetch(req: Request) {
+    if (req.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: corsHeaders });
+    }
     const url = new URL(req.url);
     if (url.pathname === "/stream" && req.method === "GET") {
       const stream = new ReadableStream({
@@ -70,6 +82,7 @@ const server = Bun.serve({
       });
       return new Response(stream, {
         headers: {
+          ...corsHeaders,
           "Content-Type": "text/plain; charset=utf-8",
           "Transfer-Encoding": "chunked",
           "Cache-Control": "no-cache",
