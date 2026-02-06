@@ -1,0 +1,1 @@
+export { getStreamReader } from "./getStreamReader";

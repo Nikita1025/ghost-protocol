@@ -1,0 +1,25 @@
+{
+  "name": "ghost-protocol",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "start": "pnpm exec concurrently -n backend,frontend -c blue,green \"pnpm --filter ghost-protocol-backend start\" \"pnpm --filter ghost-protocol-frontend dev\"",
+    "backend": "pnpm --filter ghost-protocol-backend start",
+    "frontend": "pnpm --filter ghost-protocol-frontend dev"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "concurrently": "^8.2.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.3.0",
+    "prettier": "^3.8.1",
+    "typescript-eslint": "^8.54.0"
+  }
+}
