@@ -2,10 +2,10 @@ FROM oven/bun:1-alpine
 
 WORKDIR /app
 
-COPY package.json ./
+COPY backend/package.json ./
 RUN bun install --frozen-lockfile || bun install
 
-COPY . .
+COPY backend/ .
 EXPOSE 3000
 
 CMD ["bun", "run", "src/index.ts"]
