@@ -1,3 +1,4 @@
+import { getStreamReader } from "@/shared/api/stream";
 import { REDACTED_LABEL } from "@/shared/lib/constants";
 import {
   createSanitizerState,
@@ -8,23 +9,14 @@ import {
 } from "@/shared/lib/utils/sanitizer";
 import type { AuditEntry, StreamState } from "@/shared/types";
 import { useCallback, useRef, useState } from "react";
-import type { IStreamClient } from "../types/types";
-import { defaultStreamClient } from "../utils/defaultStreamClient";
 import { mergeAudit } from "../utils/mergeAudit";
-
-interface UseStreamFeedOptions {
-  streamUrl?: string;
-  streamClient?: IStreamClient;
-}
 
 interface UseStreamFeedResult extends StreamState {
   startStream: () => Promise<void>;
   resume: () => void;
 }
 
-export function useStreamFeed(options: UseStreamFeedOptions = {}): UseStreamFeedResult {
-  const { streamUrl = "/api/stream", streamClient = defaultStreamClient } = options;
-
+export function useStreamFeed(): UseStreamFeedResult {
   const [displayText, setDisplayText] = useState("");
   const [auditReport, setAuditReport] = useState<AuditEntry[]>([]);
   const [streaming, setStreaming] = useState(false);
@@ -76,7 +68,7 @@ export function useStreamFeed(options: UseStreamFeedOptions = {}): UseStreamFeed
     setStreaming(true);
 
     try {
-      const reader = await streamClient.getReader(streamUrl);
+      const reader = await getStreamReader();
       const decoder = new TextDecoder();
       let done = false;
 
@@ -100,7 +92,7 @@ export function useStreamFeed(options: UseStreamFeedOptions = {}): UseStreamFeed
     } finally {
       setStreaming(false);
     }
-  }, [streamUrl, streamClient, appendDisplay, appendDisplayWithPause, updateAudit]);
+  }, [appendDisplay, appendDisplayWithPause, updateAudit]);
 
   return {
     displayText,

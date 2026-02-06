@@ -5,7 +5,7 @@ import { TerminalView } from "./TerminalView";
 
 export function TerminalWidget() {
   const { displayText, auditReport, streaming, completed, error, startStream, resume } =
-    useStreamFeed({ streamUrl: "/api/stream" });
+    useStreamFeed();
 
   return (
     <Layout>
